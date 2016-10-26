@@ -1,0 +1,28 @@
+---
+- hosts: all
+
+  tasks:
+
+    - name: install git package
+      apt: pkg=git update_cache=yes state=present
+      become: true
+
+    - name: clone git Devstack repo
+      git: repo=https://git.openstack.org/openstack-dev/devstack
+           dest=/home/ubuntu/devstack
+
+    - name: copy devstack conf files
+      copy: src=local.conf dest=/home/ubuntu/devstack/
+
+    - name: copy script which configure Octavia
+      copy: src=local.sh dest=/home/ubuntu/devstack/ mode=0744
+      when: false
+
+    - name: copy webserver conf file
+      copy: src=webserver.sh dest=/home/ubuntu/devstack/
+
+    - name: install devstack with Octavia
+      command: bash -c "./stack.sh"
+      args:
+          chdir: /home/ubuntu/devstack
+          creates: /opt/stack
