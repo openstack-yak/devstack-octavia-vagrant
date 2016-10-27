@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 require "vagrant-reload"
-require "vagrant-openstack-plugin"
+require "vagrant-openstack-provider"
 
 Vagrant.configure(2) do |config|
 
@@ -11,14 +11,14 @@ Vagrant.configure(2) do |config|
     os.openstack_auth_url     = ENV["OS_AUTH_URL"]
     os.username               = ENV["OS_USERNAME"]
     os.password               = ENV["OS_PASSWORD"]
-    os.tenant_name            = ENV["OS_PROJECT_NAME"]
+    os.tenant_name            = ENV["OS_TENANT_NAME"]
     os.openstack_network_url  = ENV["OS_NETWORK_URL"]
     os.openstack_image_url    = ENV["OS_IMAGE_URL"]
 
     # VM configuration
     os.flavor                 = "memory1-32"
-    os.networks               = ["dilu_mgmt"]
-    os.keypair_name           = "dilu"
+    os.networks               = ["yak-dev1"]
+    os.keypair_name           = "yarko"
     os.security_groups        = ["default-cleared", "ssh", "mosh"]
     os.volume_boot            = {
       image: "ubuntu-16.04-cloud",
@@ -27,9 +27,9 @@ Vagrant.configure(2) do |config|
     }
   end
 
-  config.vm.define "dilu-devstack-octavia-kvm" do |octavia|
+  config.vm.define "yak-devstack-octavia-kvm" do |octavia|
     octavia.ssh.private_key_path = "~/.ssh/id_rsa"
-    octavia.ssh.proxy_command = "ssh -W %h:%p -q bastion"
+    octavia.ssh.proxy_command = "ssh -W %h:%p -q 172.99.106.15"
     octavia.ssh.forward_agent = true
     octavia.ssh.username = "ubuntu"
 
