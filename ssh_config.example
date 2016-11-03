@@ -1,0 +1,42 @@
+# This is the ssh User configuration file.  See
+# ssh_config(5) for more information.  This file provides defaults for
+# users, and the values can be changed in per-user configuration files
+# or on the command line.
+
+# Configuration data is parsed as follows:
+#  1. command line options
+#  2. user-specific file
+#  3. system-wide file
+# Any configuration value is only changed the first time it is set.
+# Thus, host-specific definitions should be at the beginning of the
+# configuration file, and defaults at the end.
+
+# OpenStack Gerrit:
+Host                    review.openstack.org
+    HostName                review.openstack.org
+    IdentityFile            ~/.ssh/gerrit
+
+# My cloud development space
+# cloud1.mydevelopmentserver.org:
+#
+# jump box (public or accessible):
+Host                    my-jmp, cloud1
+    Hostname                172.99.106.1    # set to match your jump-box name or ip
+    User                    ubuntu
+    ForwardAgent            yes
+
+# public address space additions:
+Host                    172.32.1.*
+    User                    ubuntu
+    UserKnownHostsFile      /dev/null
+    StrictHostKeyChecking   no
+    ForwardAgent            yes
+
+# private address space additions:
+Host                    10.0.0.*
+    ProxyCommand            ssh -W %h:%p -q cloud1
+    UserKnownHostsFile      /dev/null
+    StrictHostKeyChecking   no
+
+# for addressing info, see https://tools.ietf.org/html/rfc1918
+
