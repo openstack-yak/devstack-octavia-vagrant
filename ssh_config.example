@@ -20,7 +20,7 @@ Host                    review.openstack.org
 # cloud1.mydevelopmentserver.org:
 #
 # jump box (public or accessible):
-Host                    my-jmp, cloud1
+Host                    my-jmp cloud1
     Hostname                172.99.106.1    # set to match your jump-box name or ip
     User                    ubuntu
     ForwardAgent            yes
